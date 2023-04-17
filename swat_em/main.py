@@ -14,16 +14,24 @@ from PyQt5.QtWidgets import (
     QSplashScreen,
     QGraphicsScene,
 )
-from PyQt5.QtGui import QIntValidator, QDoubleValidator, QIcon, QPixmap, QPainter
+from PyQt5.QtGui import QIntValidator, QDoubleValidator, QIcon, QPixmap, \
+    QPainter
 from PyQt5.QtPrintSupport import QPrintDialog, QPrinter
 from PyQt5 import QtCore
+import sys
+from PyQt5 import QtWidgets, QtCore, QtGui  # pyqt stuff
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+QtWidgets.QApplication.setAttribute(
+    QtCore.Qt.AA_EnableHighDpiScaling, True)  # enable highdpi scaling
+QtWidgets.QApplication.setAttribute(
+    QtCore.Qt.AA_UseHighDpiPixmaps, True)  # use highdpi icons
+
+sys.path.insert(0,
+                os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
     __dir__ = sys._MEIPASS  # for pyinstaller
 else:
     __dir__ = os.path.dirname(os.path.abspath(__file__))
-
 
 # Create a splash screen while loading the librarys because this
 # takes some time
@@ -107,15 +115,18 @@ class MainWindow(QMainWindow):
         self.actionGenerate_winding_combinations.triggered.connect(
             self.dialog_GenWindingCombinations
         )
-        self.actionCombination_sniffer.triggered.connect(self.dialog_CombSniffer)
-        self.actionImport_from_file.triggered.connect(self.dialog_ImportWinding)
+        self.actionCombination_sniffer.triggered.connect(
+            self.dialog_CombSniffer)
+        self.actionImport_from_file.triggered.connect(
+            self.dialog_ImportWinding)
         self.actionAdd_Notes.triggered.connect(self.dialog_get_notes)
 
         self.actionsave.triggered.connect(self.save_to_file)
         self.actionsave_as.triggered.connect(self.save_as_to_file)
         self.actionload.triggered.connect(self.load_from_file)
         self.actionProgram_Info.triggered.connect(dialog_about.about)
-        self.actionShow_winding_layout.triggered.connect(self.dialog_EditWindingLayout)
+        self.actionShow_winding_layout.triggered.connect(
+            self.dialog_EditWindingLayout)
         self.actionSettings.triggered.connect(self.dialog_settings)
         self.actionundo.triggered.connect(self.undo)
         self.actionredo.triggered.connect(self.redo)
@@ -129,10 +140,12 @@ class MainWindow(QMainWindow):
         self.project_listWidget.itemChanged.connect(
             self.projectlist_rename
         )  # item renamed
-        self.project_listWidget.model().rowsMoved.connect(self.projectlist_reorder)
+        self.project_listWidget.model().rowsMoved.connect(
+            self.projectlist_reorder)
 
         # context-menu on project models
-        self.project_listWidget.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.project_listWidget.setContextMenuPolicy(
+            QtCore.Qt.ActionsContextMenu)
 
         self.actionNew = QAction(
             "New Winding",
@@ -239,7 +252,8 @@ class MainWindow(QMainWindow):
         )
 
         self.fig["tab_star"] = plots._slot_star(
-            self.mplvl_star, self.mplwidget_star, self.data, self.tableWidget_star
+            self.mplvl_star, self.mplwidget_star, self.data,
+            self.tableWidget_star
         )
         self.Button_cp2clipboard_image_star.clicked.connect(
             self.fig["tab_star"].cp2clipboard
@@ -260,7 +274,8 @@ class MainWindow(QMainWindow):
         )
 
         self.report = plots._report(self.reportEdit)
-        self.Button_cp2clipboard_image_report.clicked.connect(self.report.cp2clipboard)
+        self.Button_cp2clipboard_image_report.clicked.connect(
+            self.report.cp2clipboard)
         self.highlighter = plots._Report_Highlighter(self.reportEdit)
 
         self.update_project_list()
@@ -333,7 +348,8 @@ class MainWindow(QMainWindow):
         else:
             idx = i if i < idx else idx
             idx = 0 if idx < 0 else idx
-        self.project_listWidget.setCurrentRow(idx)  # last item is current model
+        self.project_listWidget.setCurrentRow(
+            idx)  # last item is current model
 
     def update_project(self, idx=None):
         """update the clicked data object form the project"""
@@ -534,7 +550,8 @@ class MainWindow(QMainWindow):
             elif ret == 2:
                 self.dialog_GenWindingCombinations()
             else:
-                raise (Exception, "winding generator {} not implemented".format(ret))
+                raise (
+                Exception, "winding generator {} not implemented".format(ret))
 
     def dialog_settings(self):
         global config
@@ -614,7 +631,8 @@ class MainWindow(QMainWindow):
             if tab_name == "tab_mmk":
                 f = _get_float(self.MMK_phase_edit.text())
                 f = 0.0 if f is None else f
-                self.fig[tab_name].plot(self.data, f, small_update=small_update)
+                self.fig[tab_name].plot(self.data, f,
+                                        small_update=small_update)
 
     def printer(self):
         printer = QPrinter(QPrinter.HighResolution)
@@ -642,7 +660,8 @@ class MainWindow(QMainWindow):
                     rect = painter.viewport()
                     size = pixmap.size()
                     size.scale(rect.size(), QtCore.Qt.KeepAspectRatio)
-                    painter.setViewport(rect.x(), rect.y(), size.width(), size.height())
+                    painter.setViewport(rect.x(), rect.y(), size.width(),
+                                        size.height())
                     painter.setWindow(pixmap.rect())
                     painter.drawPixmap(0, 0, pixmap)
                     del painter
@@ -672,9 +691,12 @@ class MainWindow(QMainWindow):
         for k in range(self.plot_tabs.count()):
             tab = self.plot_tabs.widget(k)
             self.plot_tabs_store[tab.objectName()] = {}
-            self.plot_tabs_store[tab.objectName()]["widget"] = self.plot_tabs.widget(k)
-            self.plot_tabs_store[tab.objectName()]["icon"] = self.plot_tabs.tabIcon(k)
-            self.plot_tabs_store[tab.objectName()]["label"] = self.plot_tabs.tabText(k)
+            self.plot_tabs_store[tab.objectName()][
+                "widget"] = self.plot_tabs.widget(k)
+            self.plot_tabs_store[tab.objectName()][
+                "icon"] = self.plot_tabs.tabIcon(k)
+            self.plot_tabs_store[tab.objectName()][
+                "label"] = self.plot_tabs.tabText(k)
 
     def plot_tabs_update_menu(self, key, flag):
         self.setUpdatesEnabled(False)  # block signals
@@ -683,7 +705,8 @@ class MainWindow(QMainWindow):
 
     def plot_tabs_add(self, key, update_menu=False):
         self.plot_tabs.addTab(
-            self.plot_tabs_store[key]["widget"], self.plot_tabs_store[key]["label"]
+            self.plot_tabs_store[key]["widget"],
+            self.plot_tabs_store[key]["label"]
         )
         idx = self.plot_tabs.count()
         self.plot_tabs.setTabIcon(idx - 1, self.plot_tabs_store[key]["icon"])
@@ -771,7 +794,8 @@ class MainWindow(QMainWindow):
         """
         options = QFileDialog.Options()
         filename, _ = QFileDialog.getSaveFileName(
-            self, "Save winding file", "", "Winding Files (*.wdg)", options=options
+            self, "Save winding file", "", "Winding Files (*.wdg)",
+            options=options
         )
         if filename:
             if not filename.endswith(".wdg"):
@@ -809,7 +833,8 @@ class MainWindow(QMainWindow):
 
             options = QFileDialog.Options()
             filename, _ = QFileDialog.getOpenFileName(
-                self, "Open winding file", "", "Winding Files (*.wdg)", options=options
+                self, "Open winding file", "", "Winding Files (*.wdg)",
+                options=options
             )
         if filename:
             self.project.load_from_file(filename)
