@@ -186,7 +186,8 @@ class HtmlReport:
             res=config["plt"]["res"],
         )
         self.data.plot_MMK(
-            os.path.join(tmpdir, "plot_MMK.png"), res=config["plt"]["res"], phase=0
+            os.path.join(tmpdir, "plot_MMK.png"), res=config["plt"]["res"],
+            phase=0
         )
 
     def create(self, filename=None):
@@ -273,21 +274,25 @@ class HtmlReport:
             line = line.replace("{{ NOTES }}", self.data.get_notes())
 
             line = line.replace(
-                "{{ plot_layout }}", os.path.join(self.contentdir, "plot_layout.png")
+                "{{ plot_layout }}",
+                os.path.join(self.contentdir, "plot_layout.png")
             )
             txt, html = self.data.get_basic_characteristics()
             line = line.replace("{{ table_bc }}", html)
 
             line = line.replace(
-                "{{ plot_star }}", os.path.join(self.contentdir, "plot_star.png")
+                "{{ plot_star }}",
+                os.path.join(self.contentdir, "plot_star.png")
             )
             line = line.replace("{{ table_star }}", _table_star)
             line = line.replace(
-                "{{ plot_wf_el }}", os.path.join(self.contentdir, "plot_wf_el.png")
+                "{{ plot_wf_el }}",
+                os.path.join(self.contentdir, "plot_wf_el.png")
             )
             line = line.replace("{{ table_wf_el }}", _table_wf_el)
             line = line.replace(
-                "{{ plot_wf_mech }}", os.path.join(self.contentdir, "plot_wf_mech.png")
+                "{{ plot_wf_mech }}",
+                os.path.join(self.contentdir, "plot_wf_mech.png")
             )
             line = line.replace("{{ table_wf_mech }}", _table_wf_mech)
             line = line.replace(
@@ -306,7 +311,8 @@ class HtmlReport:
         Open the html report in the webbrowser
         """
         if not os.path.isfile(self.filename):
-            raise Exception('No html report available. Use the ".create()" before')
+            raise Exception(
+                'No html report available. Use the ".create()" before')
         else:
             import webbrowser
 
@@ -362,7 +368,8 @@ def export_xlsx(fname, data):
             turns = data.machinedata["turns"]
             for km, ph in enumerate(data.machinedata["phases"]):
                 col = get_phase_color(km)
-                cell_format = workbook.add_format({"bg_color": col, "align": "center"})
+                cell_format = workbook.add_format(
+                    {"bg_color": col, "align": "center"})
                 for kl in range(len(ph)):
                     layer = ph[kl]
                     for j, cs in enumerate(layer):
@@ -371,9 +378,11 @@ def export_xlsx(fname, data):
                         else:
                             item = turns
                         if cs > 0:
-                            worksheet.write(i + kl, 1 + cs - 1, item, cell_format)
+                            worksheet.write(i + kl, 1 + cs - 1, item,
+                                            cell_format)
                         else:
-                            worksheet.write(i + kl, 1 + abs(cs) - 1, item, cell_format)
+                            worksheet.write(i + kl, 1 + abs(cs) - 1, item,
+                                            cell_format)
 
             i += data.get_num_layers()
         else:
@@ -477,7 +486,8 @@ class TextReport:
             "Number of slots        Q: {}".format(self.data.get_num_slots())
         )
         self._txt.append(
-            "Number of pole pairs   p: {}".format(self.data.get_num_polepairs())
+            "Number of pole pairs   p: {}".format(
+                self.data.get_num_polepairs())
         )
         self._txt.append(
             "Number of phases       m: {}".format(self.data.get_num_phases())
@@ -485,7 +495,8 @@ class TextReport:
         self._txt.append(
             "Number of layers      NL: {}".format(self.data.get_num_layers())
         )
-        self._txt.append("Number of slots/phase  q: {}".format(self.data.get_q()))
+        self._txt.append(
+            "Number of slots/phase  q: {}".format(self.data.get_q()))
         self._txt.append("\n")
 
         _, ls, _ = self.data.get_layers()
@@ -499,7 +510,8 @@ class TextReport:
         self._txt.append("COIL CONNECTION (END WINDINGS)")
         self._txt.append("==============================")
         self._txt.append("'from_slot' contains the positive coil sides")
-        self._txt.append("'direction': clockwise (1) or counter clockwise (-1)")
+        self._txt.append(
+            "'direction': clockwise (1) or counter clockwise (-1)")
         ov = self.data.get_wdg_overhang()
         head = [
             "Phase",
@@ -532,10 +544,12 @@ class TextReport:
         bc, txt = self.data.get_basic_characteristics()
         self._txt.append("WINDING FACTOR")
         self._txt.append("==============")
-        self._txt.append("Periodic base winding                  t: {}".format(bc["t"]))
+        self._txt.append(
+            "Periodic base winding                  t: {}".format(bc["t"]))
         a_ = [str(i) for i in analyse.Divisors(bc["a"])]
         self._txt.append(
-            "Possible parallel winding connections  a: {}".format(", ".join(a_))
+            "Possible parallel winding connections  a: {}".format(
+                ", ".join(a_))
         )
 
         for k in range(len(bc["kw1"])):

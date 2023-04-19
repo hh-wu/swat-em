@@ -56,7 +56,7 @@ from swat_em import dialog_settings
 from swat_em.config import config, save_config, get_config
 from swat_em import datamodel, project
 
-# from swat_em import wdggenerator
+# from swat_em import winding_generator
 from swat_em import plots
 from swat_em import report
 from swat_em.analyse import _get_float

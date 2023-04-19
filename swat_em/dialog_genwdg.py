@@ -12,7 +12,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from swat_em import wdggenerator
+from swat_em import winding_generator
 from swat_em import datamodel
 from swat_em.config import config, get_phase_color
 
@@ -106,7 +106,7 @@ class GenWinding2(QDialog):
 
         self.data = datamodel()
         self.data.set_machinedata(Q=self.Q, m=self.m, p=self.P / 2)
-        ret = wdggenerator.genwdg(self.Q, self.P, self.m, self.w, self.layers, Qes)
+        ret = winding_generator.genwdg(self.Q, self.P, self.m, self.w, self.layers, Qes)
         if ret is None:
             return
         if ret["valid"] == False:
@@ -233,7 +233,7 @@ class GenWindingCombinations(QDialog):
             for iP, kP in enumerate(self.Plist):
                 d = datamodel()
                 d.set_machinedata(Q=kQ, m=self.m, p=kP / 2)
-                ret = wdggenerator.genwdg(
+                ret = winding_generator.genwdg(
                     kQ, kP, self.m, wstep, self.layers, empty_slots
                 )
                 if ret:

@@ -17,7 +17,7 @@ pg.setConfigOption("foreground", "k")
 pg.setConfigOptions(antialias=True)
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from swat_em import wdggenerator
+from swat_em import winding_generator
 from swat_em import datamodel
 from swat_em.config import config, get_phase_color, get_line_color
 from swat_em.report import num2str

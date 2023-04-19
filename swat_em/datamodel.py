@@ -13,7 +13,7 @@ import gc
 import numpy as np
 from swat_em import analyse
 from swat_em import report as rep
-from swat_em import wdggenerator
+from swat_em import winding_generator
 from swat_em.config import config, get_phase_color
 from swat_em import plots
 
@@ -237,7 +237,7 @@ class datamodel:
                     >0: Manual defined number of empty slots
         """
 
-        wdglayout = wdggenerator.genwdg(Q, P, m, w, layers, empty_slots)
+        wdglayout = winding_generator.genwdg(Q, P, m, w, layers, empty_slots)
         if wdglayout is None:
             return
         self.set_machinedata(Q, int(P / 2), m, wdglayout["Qes"])
